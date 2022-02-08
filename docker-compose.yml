@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+ first:
+  build: ./REST-API-1
+  container_name: first
+  command: ./first
+  depends_on:
+    - db
+  ports:
+    - 8080:8080
+ second:
+  build: ./REST-API-2
+  container_name: second
+  command: ./second
+  depends_on:
+    - db
+  ports:
+    - 9090:9090
+ db:
+  image: mongo
+  container_name: db
+  restart: always
+  ports:
+   - 27017:27017
+ nginx:
+  build:
+   dockerfile: Dockerfile.nginx
+  container_name: nginx
+  ports:
+   - 80:80
+  links:
+    - first
+    - second
+
+
+
